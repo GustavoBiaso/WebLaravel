@@ -24,23 +24,23 @@ class AuthController extends Controller
             ]);
 
             if ($validatedData->fails()) {
-                return $this->error("Falha ao registrar!", 403, $validatedData->errors());
+                return $this->error("Falha ao registrar!!!", 403, $validatedData->errors());
             }
 
             $user = User::create([
                 'name' => $request->get('name'),
                 'email' => $request->get('email'),
-                'password' => Hash::make($request->get('password'))
+                'password' => Hash::make($request->get('password')),
             ]);
 
-            $token = $user->createToken('auth_token')->painTextToken;
+            $token = $user->createToken('auth_token')->plainTextToken;
 
-            $this->success([
+            return $this->success([
                 'access_token' => $token,
                 'user' => $user,
-            ], "Cadastro realizado com sucesso!");
+            ], "Cadastro realizado com sucesso!!!");
         } catch (\Throwable $th) {
-            return $this->error("Falha ao registrar!", 403, $th->getMessage());
+            return $this->error("Falha ao registrar!!!", 401, $th->getMessage());
         }
     }
 
